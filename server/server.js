@@ -21,6 +21,15 @@ app.post('/todos', (req, res) => {
   });
 });
 
+app.get('/todos', (req, res) => {
+
+  Todo.find().then( (result) => {
+    res.send(result);
+  }, (err) =>{
+    res.send('Unable to find todos');
+  });
+});
+
 app.listen(8080, () => {
   console.log('Started on port 8080');
 });
