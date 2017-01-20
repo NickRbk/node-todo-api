@@ -9,26 +9,8 @@ let app = express();
 
 app.use(bodyParser.json());
 
-app.post('/todos', (req, res) => {
-  let todo = new Todo({
-    text: req.body.text
-  });
-
-  todo.save().then( (result) => {
-    res.send(result);
-  }, (err) => {
-    res.status(400).send(err);
-  });
-});
-
-app.get('/todos', (req, res) => {
-
-  Todo.find().then( (result) => {
-    res.send(result);
-  }, (err) =>{
-    res.send('Unable to find todos');
-  });
-});
+require('./routes/todos-route')(app, Todo);
+require('./routes/users-route')(app, User);
 
 app.listen(8080, () => {
   console.log('Started on port 8080');
