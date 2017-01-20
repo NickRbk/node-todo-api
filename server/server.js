@@ -6,6 +6,8 @@ const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 
+const port = process.env.PORT || 8080;
+
 let app = express();
 
 app.use(bodyParser.json());
@@ -15,8 +17,8 @@ require('./routes/users-route')(app, User);
 require('./routes/todosID-route')(app, Todo, ObjectID);
 
 
-app.listen(8080, () => {
-  console.log('Started on port 8080');
+app.listen(port, () => {
+  console.log(`Started up at port ${port}`);
 });
 
 module.exports = {app};
