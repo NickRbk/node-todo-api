@@ -1,6 +1,7 @@
 const express = require('express');
 const{ObjectID} = require('mongodb');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -16,6 +17,7 @@ require('./routes/todos-route')(app, Todo);
 require('./routes/users-route')(app, User);
 require('./routes/todosID-route')(app, Todo, ObjectID);
 require('./routes/todosID-delete-route')(app, Todo, ObjectID);
+require('./routes/todosID-patch-route')(app, Todo, ObjectID, _);
 
 
 app.listen(port, () => {
