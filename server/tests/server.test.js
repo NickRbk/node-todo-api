@@ -10,7 +10,9 @@ const todos = [{
   text: 'First text to do'
 }, {
   _id: new ObjectID(),
-  text: 'Second text to do'
+  text: 'Second text to do',
+  completed: true,
+  completedAt: 777
 }];
 
 beforeEach( (done) => {
@@ -21,7 +23,7 @@ beforeEach( (done) => {
 
 describe('POST /todos', () => {
 
-  it('Should create a new todo', (done) => {
+  it('should create a new todo', (done) => {
     let text = 'Test todo text';
     request(app)
       .post('/todos')
@@ -44,7 +46,7 @@ describe('POST /todos', () => {
       });
   });
 
-  it('Should not create a new todo', (done) => {
+  it('should not create a new todo', (done) => {
 
     request(app)
       .post('/todos')
@@ -63,7 +65,7 @@ describe('POST /todos', () => {
 });
 
 describe('GET /todos', () => {
-  it('Should find all todos', (done) => {
+  it('should find all todos', (done) => {
     request(app)
       .get('/todos')
       .expect(200)
@@ -129,6 +131,43 @@ describe('DELETE /todos:id', () => {
     request(app)
       .delete(`/todos/1234`)
       .expect(404)
+      .end(done);
+  });
+});
+
+describe('PATCH /todos/:id', () => {
+  it('should update the todo', (done) => {
+    let id = todos[0]._id.toHexString();
+
+    let text = 'Replace text';
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .send({
+        completed: true,
+        text
+      })
+      .expect(200)
+      .expect( (res) => {
+        expect(res.body.todo.text).toBe(text);
+        expect(res.body.todo.completed).toBe(true);
+        expect(res.body.todo.completedAt).toBeA('number');
+      })
+      .end(done);
+  });
+
+  it('should cleare timestamp if todo is not comleted', (done) => {
+    let id = todos[0]._id.toHexString();
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .send({
+        completed: false
+      })
+      .expect(200)
+      .expect( (res) => {
+        expect(res.body.todo.completedAt).toBe(null);
+      })
       .end(done);
   });
 });
