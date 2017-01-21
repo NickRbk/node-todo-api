@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 require('./routes/todos-route')(app, Todo);
 require('./routes/users-route')(app, User);
 require('./routes/todosID-route')(app, Todo, ObjectID);
+require('./routes/todosID-delete-route')(app, Todo, ObjectID);
 
 
 app.listen(port, () => {
