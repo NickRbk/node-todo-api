@@ -22,9 +22,6 @@ require('./routes/todosID-route')(app, Todo, ObjectID);
 require('./routes/todosID-delete-route')(app, Todo, ObjectID);
 require('./routes/todosID-patch-route')(app, Todo, ObjectID, _);
 
-
-
-
 app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
 });
