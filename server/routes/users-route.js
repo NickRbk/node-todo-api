@@ -1,13 +1,15 @@
-module.exports = (app, User) => {
+module.exports = (app, User, _) => {
 
   app.post('/users', (req, res) => {
-    let user = new User({
-      email: req.body.text
-    });
 
-    user.save().then( (result) => {
-      res.send(result);
-    }, (err) => {
+    let body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body);
+
+    user.save().then( () => {
+      return user.generateAuthToken();
+    }).then( (token) => {
+      res.header('x-auth', token).send(user);
+    }).catch( (err) => {
       res.status(400).send(err);
     });
   });

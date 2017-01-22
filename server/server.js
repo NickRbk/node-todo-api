@@ -16,7 +16,7 @@ let app = express();
 app.use(bodyParser.json());
 
 require('./routes/todos-route')(app, Todo);
-require('./routes/users-route')(app, User);
+require('./routes/users-route')(app, User, _);
 require('./routes/todosID-route')(app, Todo, ObjectID);
 require('./routes/todosID-delete-route')(app, Todo, ObjectID);
 require('./routes/todosID-patch-route')(app, Todo, ObjectID, _);
