@@ -16,11 +16,11 @@ let app = express();
 
 app.use(bodyParser.json());
 
-require('./routes/todos-route')(app, Todo);
+require('./routes/todos-route')(app, Todo, authenticate);
 require('./routes/users-route')(app, User, _);
-require('./routes/todosID-route')(app, Todo, ObjectID);
-require('./routes/todosID-delete-route')(app, Todo, ObjectID);
-require('./routes/todosID-patch-route')(app, Todo, ObjectID, _);
+require('./routes/todosID-route')(app, Todo, ObjectID, authenticate);
+require('./routes/todosID-delete-route')(app, Todo, ObjectID, authenticate);
+require('./routes/todosID-patch-route')(app, Todo, ObjectID, _, authenticate);
 
 app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);

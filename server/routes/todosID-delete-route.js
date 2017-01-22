@@ -1,4 +1,4 @@
-module.exports = (app, Todo, ObjectID) => {
+module.exports = (app, Todo, ObjectID, authenticate) => {
   app.delete('/todos/:id', (req, res) => {
 
     let id = req.params.id;

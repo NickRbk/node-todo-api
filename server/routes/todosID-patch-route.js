@@ -1,6 +1,6 @@
-module.exports = (app, Todo, ObjectID, _) => {
+module.exports = (app, Todo, ObjectID, _, authenticate) => {
 
-  app.patch('/todos/:id', (req, res) => {
+  app.patch('/todos/:id', authenticate, (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['text', 'completed']);
 
@@ -15,16 +15,16 @@ module.exports = (app, Todo, ObjectID, _) => {
       body.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(id, {$set: body}, {new: true})
-      .then( (todo) => {
-        if(!todo) {
-          return res.send();
-        }
+    Todo.findOneAndUpdate({_id: id, _creator: req.user._id},
+      {$set: body}, {new: true})
+    .then((todo) => {
+      if (!todo) {
+        return res.status(404).send();
+      }
 
-        res.send({todo});
-      })
-      .catch( (e) => {
-        res.status(400).send();
-      });
+      res.send({todo});
+    }).catch((e) => {
+      res.status(400).send();
+    });
   });
 };

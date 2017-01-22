@@ -1,8 +1,9 @@
-module.exports = (app, Todo) => {
+module.exports = (app, Todo, authenticate) => {
 
-  app.post('/todos', (req, res) => {
+  app.post('/todos', authenticate, (req, res) => {
     let todo = new Todo({
-      text: req.body.text
+      text: req.body.text,
+      _creator: req.user._id
     });
 
     todo.save().then( (result) => {
@@ -12,12 +13,14 @@ module.exports = (app, Todo) => {
     });
   });
 
-  app.get('/todos', (req, res) => {
+  app.get('/todos', authenticate, (req, res) => {
 
-    Todo.find().then( (result) => {
-      res.send(result);
+    Todo.find({
+      _creator: req.user._id
+    }).then( (todos) => {
+      res.send({todos});
     }, (err) =>{
-      res.send('Unable to find todos');
+      res.status(400).send(err);
     });
   });
 };
