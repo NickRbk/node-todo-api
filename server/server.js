@@ -10,7 +10,7 @@ const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 let app = express();
 
